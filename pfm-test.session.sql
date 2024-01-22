@@ -126,3 +126,24 @@ INSERT INTO users (first_name, last_name, email, password, height, is_subscribe)
  INSERT INTO users (first_name, last_name, email, birthdate, password, height, is_subscribe) VALUES 
 ('Rohn', 'Doe', 'fare321@j.sdf', '2024-01-21', 'kjhf@#$ujhsdf', 3.0, FALSE);
 
+
+/*
+Створити таблицю для повідомлень (messages)
+    body рядок тексту, не пустий, максимум 5000
+    автор рядок тексту, не пустий, 256
+    дата створення - таймштемп, по дефолту поточний
+    чи прочитано - бул, по дефолту не прочитане
+
+
+*/
+
+
+CREATE TABLE messages(
+    body varchar(5000) NOT NULL CHECK (body != ''),
+    author varchar(256) NOT NULL CHECK (author != ''),
+    created_at timestamp DEFAULT current_timestamp,
+    is_read bool DEFAULT FALSE
+);
+
+INSERT INTO messages (body, author) VALUES 
+('Hello', 'John'), ('Hi', 'Jane');
