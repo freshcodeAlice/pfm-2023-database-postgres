@@ -86,3 +86,33 @@ CREATE TABLE cars (
     body_type varchar(100),
     fuel_type varchar(100)
 );
+
+
+/* constraints */
+
+DROP TABLE users;
+
+
+CREATE TABLE users(
+    first_name varchar(256) NOT NULL CHECK (first_name != ''),
+    last_name varchar(256) NOT NULL CHECK (last_name != ''),
+    birthdate date,
+    email varchar(300) NOT NULL UNIQUE CHECK (email != ''),
+    password varchar(300) NOT NULL CHECK (password != ''),
+    height numeric(3,2) CONSTRAINT normal_height CHECK (height < 5.0 AND height > 0),
+    is_subscribe bool NOT NULL
+);
+/* обмеження вказуються при визначенні стовпця або всієї таблиці */
+
+INSERT INTO users (first_name, last_name, email, password, height, is_subscribe) VALUES 
+('', '', 'fare@j.sdf', 'kjhf@#$ujhsdf', 8.0, FALSE);
+/* Constraint "users_height_check"
+У будь-якого обмеження (констрейнту) є ім'я, за яким ми можемо до нього доступитися
+По дефолту, якщо не вказано іншого, ім'я формується за принципом:
+ім'яТаблиці_ім'яСтовпця_типПеревірки
+
+ */
+
+
+ INSERT INTO users (first_name, last_name, email, password, height, is_subscribe) VALUES 
+('Rick', 'Doe', 'fare333@j.sdf', 'kjhf@#$ujhsdf', 3.0, FALSE); -- "users_email_key"
