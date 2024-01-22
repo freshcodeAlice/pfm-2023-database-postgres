@@ -96,11 +96,12 @@ DROP TABLE users;
 CREATE TABLE users(
     first_name varchar(256) NOT NULL CHECK (first_name != ''),
     last_name varchar(256) NOT NULL CHECK (last_name != ''),
-    birthdate date,
+    birthdate date CHECK (birthdate > '1900-01-01' AND birthdate < current_date),
     email varchar(300) NOT NULL UNIQUE CHECK (email != ''),
     password varchar(300) NOT NULL CHECK (password != ''),
-    height numeric(3,2) CONSTRAINT normal_height CHECK (height < 5.0 AND height > 0),
-    is_subscribe bool NOT NULL
+    height numeric(3,2) CONSTRAINT normal_height CHECK (height BETWEEN 0 AND 5.0),
+    is_subscribe bool NOT NULL,
+    created_at timestamp DEFAULT current_timestamp
 );
 /* обмеження вказуються при визначенні стовпця або всієї таблиці */
 
@@ -114,5 +115,14 @@ INSERT INTO users (first_name, last_name, email, password, height, is_subscribe)
  */
 
 
- INSERT INTO users (first_name, last_name, email, password, height, is_subscribe) VALUES 
-('Rick', 'Doe', 'fare333@j.sdf', 'kjhf@#$ujhsdf', 3.0, FALSE); -- "users_email_key"
+ INSERT INTO users (first_name, last_name, email, birthdate, password, height, is_subscribe) VALUES 
+('Nick', 'Doe', 'fare3we3@j.sdf', '2024-01-21', 'kjhf@#$ujhsdf', 3.0, FALSE),
+('John', 'Doe', 'fare322@j.sdf', '2024-01-21', 'kjhf@#$ujhsdf', 3.0, FALSE); -- "users_email_key"
+
+
+ INSERT INTO users (first_name, last_name, email, birthdate, password, height, is_subscribe) VALUES 
+('Kick', 'Doe', 'fare123@j.sdf', '2024-01-21', 'kjhf@#$ujhsdf', 3.0, FALSE);
+
+ INSERT INTO users (first_name, last_name, email, birthdate, password, height, is_subscribe) VALUES 
+('Rohn', 'Doe', 'fare321@j.sdf', '2024-01-21', 'kjhf@#$ujhsdf', 3.0, FALSE);
+
