@@ -136,9 +136,10 @@ INSERT INTO users (first_name, last_name, email, password, height, is_subscribe)
 
 
 */
-
+DROP TABLE messages;
 
 CREATE TABLE messages(
+    id serial NOT NULL UNIQUE,
     body varchar(5000) NOT NULL CHECK (body != ''),
     author varchar(256) NOT NULL CHECK (author != ''),
     created_at timestamp DEFAULT current_timestamp,
@@ -147,3 +148,46 @@ CREATE TABLE messages(
 
 INSERT INTO messages (body, author) VALUES 
 ('Hello', 'John'), ('Hi', 'Jane');
+
+
+INSERT INTO messages (body) VALUES 
+('Hello');
+
+INSERT INTO messages (body, author, id) VALUES 
+('Hello', 'John', 7);
+
+
+/*
+Переробити таблицю машин
+
+ Таска:
+описати таблицю машин
+
+Машина
+    - бренд - рядок - обов'язковий, не пустий
+    - модель - рядок - не пуста
+    - рік випуску - дата з 01-01
+    - літраж (об'єм бака) - 40 - ціле число від 0 до 1500
+    - колір - рядок
+    - об'єм двигуна (1600) - ціле число
+    - тип кузова (седан, універсал) - рядок
+    - тип пального - рядок
+    - ідентифікатор
+
+
+*/
+
+DROP TABLE cars;
+
+
+CREATE TABLE cars (
+    id serial NOT NULL UNIQUE,
+    brand varchar(300) NOT NULL CHECK (brand != ''),
+    model varchar(300)  CHECK (model != ''),
+    year date,
+    volume int CHECK (volume > 0 AND volume < 1500),
+    color varchar(100),
+    engine_volume int,
+    body_type varchar(100),
+    fuel_type varchar(100)
+);
