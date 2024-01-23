@@ -200,3 +200,35 @@ CREATE TABLE chats_to_users (
 );
 
 INSERT INTO chats_to_users (user_id, chat_id) VALUES (2, 2);
+
+
+
+/*
+Зв'язок 1:1
+
+Капітан - команда
+1 капітан має 1 команду
+1 команда має 1 капітана
+
+
+Оскільки неможливо створити таблицю, яка посилатиметься в нікуди, маємо одну з двох таблиць створити без посилання, потім створити другу, яка посилається на першу і змінити (alter) першу, додавши їй посилання
+
+
+Insert в такий зв'язок частіше за все виконується в межах однієї транзакції
+*/
+
+
+CREATE TABLE capitains (
+    id serial PRIMARY KEY,
+    first_name varchar(300)
+
+); --    command_id int REFERENCES commands(id)
+
+CREATE TABLE commands (
+    id serial PRIMARY KEY,
+    name varchar(300),
+    capitain_id int REFERENCES capitains(id)
+);
+
+ALTER TABLE capitains
+ADD COLUMN command_id int REFERENCES commands(id);
