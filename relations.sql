@@ -232,3 +232,32 @@ CREATE TABLE commands (
 
 ALTER TABLE capitains
 ADD COLUMN command_id int REFERENCES commands(id);
+
+
+ALTER TABLE capitains 
+DROP COLUMN command_id;
+
+DROP TABLE commands;
+
+DROP TABLE capitains;
+
+DROP TABLE dogs;
+
+
+/*
+
+Сутність контент (content)
+    - назва
+    - опис
+    - дата створення
+    - автор (юзер)
+
+Реакції
+    - isLiked (true - контент лайкнули, якщо false - дизлайкнули, якщо null - оцінки немає)
+
+Реакція - це відношення юзера до контент
+(зв'язок m:n)
+
+
+
+*/
