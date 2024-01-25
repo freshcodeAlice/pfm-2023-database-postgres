@@ -1,0 +1,23 @@
+{
+  "name": "pfm-2023-database-postgres",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freshcodeAlice/pfm-2023-database-postgres.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/freshcodeAlice/pfm-2023-database-postgres/issues"
+  },
+  "homepage": "https://github.com/freshcodeAlice/pfm-2023-database-postgres#readme",
+  "dependencies": {
+    "pg": "^8.11.3"
+  }
+}
