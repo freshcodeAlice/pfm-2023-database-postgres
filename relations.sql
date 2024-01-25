@@ -261,3 +261,20 @@ DROP TABLE dogs;
 
 
 */
+
+DROP TABLE content;
+
+CREATE TABLE content (
+    id serial PRIMARY KEY,
+    name varchar(300) NOT NULL CHECK (name != ''),
+    description varchar(500),
+    created_at timestamp NOT NULL DEFAULT current_timestamp,
+    author_id int REFERENCES users
+);
+
+CREATE TABLE reaction (
+    user_id int REFERENCES users,
+    content_id int REFERENCES content,
+    isLiked boolean,
+    PRIMARY KEY (user_id, content_id)
+);
