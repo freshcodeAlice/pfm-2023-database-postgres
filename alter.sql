@@ -17,3 +17,13 @@ DROP COLUMN id;
 
 ALTER TABLE dogs
 ADD CONSTRAINT "dogs_pkey" PRIMARY KEY (id);
+
+
+ALTER TABLE users 
+ADD COLUMN gender varchar(100);
+
+ALTER TABLE users
+DROP COLUMN password;
+
+
+DELETE FROM users WHERE id = 5;
