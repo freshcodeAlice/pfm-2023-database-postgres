@@ -33,4 +33,4 @@ ALTER TABLE products
 DROP COLUMN name;
 
 
-DELETE FROM products;
+DELETE FROM orders;
