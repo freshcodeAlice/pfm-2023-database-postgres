@@ -27,3 +27,10 @@ DROP COLUMN password;
 
 
 DELETE FROM users WHERE id = 5;
+
+
+ALTER TABLE products
+DROP COLUMN name;
+
+
+DELETE FROM products;
