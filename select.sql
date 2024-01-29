@@ -324,3 +324,84 @@ WHERE char_length(email) < 10;
 7. Отримати користувачів, в яких непарний id і зп > 500
 
 */
+
+
+--1
+CREATE TABLE workers(
+    id serial PRIMARY KEY,
+    birthday date CHECK (birthday > '1900-01-01'),
+    name varchar(300) NOT NULL CHECK (name != ''),
+    salary int NOT NULL CHECK (salary > 0)
+);
+
+--2
+INSERT INTO workers (name, birthday, salary)
+VALUES ('Yaroslava', '1990-02-02', 1200);
+
+--3
+INSERT INTO workers (name, birthday, salary)
+VALUES ('Oleg', '1980-02-02', 400);
+
+--4
+INSERT INTO workers (name, birthday, salary)
+VALUES ('Alexander', '1985-01-01', 900), ('Maria', '1995-01-01', 200);
+
+--UPDATE
+--1
+
+UPDATE workers
+SET salary = 500
+WHERE name = 'Oleg';
+
+--2
+
+UPDATE workers
+SET birthday = '1987-01-01'
+WHERE id = 4;
+
+--3
+UPDATE workers
+SET salary = 700
+WHERE salary < 500;
+
+--4
+UPDATE workers
+SET birthday = '1999-01-01'
+WHERE id BETWEEN 2 AND 5;
+
+
+---5
+UPDATE workers
+SET name = 'Eugene'
+WHERE name = 'Alexander';
+
+
+---SELECT
+
+--1
+SELECT * FROM workers
+WHERE id = 3;
+
+--2
+SELECT * FROM workers
+WHERE salary > 400;
+
+--3
+SELECT birthday, salary FROM workers
+WHERE name = 'Eugene';
+
+--4
+SELECT * FROM workers
+WHERE name = 'Peter';
+
+--5
+SELECT * FROM workers
+WHERE extract(years from age(birthday)) > 27 OR salary > 1000;
+
+--6
+SELECT * FROM workers
+WHERE extract(years from age(birthday)) BETWEEN 25 AND 28;
+
+--7
+SELECT * FROM workers
+WHERE id % 2 = 1 AND salary > 500;
