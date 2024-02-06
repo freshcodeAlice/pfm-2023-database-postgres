@@ -129,3 +129,166 @@ VALUES (2,
 
 ALTER TABLE orders
 ALTER COLUMN status SET DEFAULT 'new';
+
+
+---- Views - Віртуальні таблиці ----
+
+/* 
+Views - представлення - віртуальні таблиці
+Фізично цих табличних виразів не існує
+*/
+
+
+-- Задача - мати таблицю юзерів з кількістю їхніх замовлень
+
+
+SELECT u.*, count(o.id) AS "order_count"
+FROM users AS u 
+LEFT JOIN orders AS o 
+ON u.id = o.customer_id
+GROUP BY u.id;
+
+--- Створення View
+CREATE VIEW users_with_orders_amount AS (
+    SELECT u.*, count(o.id) AS "order_count"
+    FROM users AS u 
+    LEFT JOIN orders AS o 
+    ON u.id = o.customer_id
+    GROUP BY u.id
+);
+
+
+-- Використання view
+
+SELECT * FROM users_with_orders_amount
+ORDER BY id;
+
+SELECT * FROM users_with_orders_amount
+WHERE order_count >= 3;
+
+
+UPDATE users
+SET first_name = 'Alex'
+WHERE id = 60;
+
+
+--- всі замовлення разом з їхньою вартістю
+
+
+SELECT o.*, sum(p.price * otp.quantity) AS order_sum
+FROM orders AS o 
+JOIN orders_to_products AS otp
+ON o.id = otp.order_id
+JOIN products AS p 
+ON otp.product_id = p.id
+GROUP BY o.id;
+
+
+-- Всі замовлення конкретного користувача
+-- Всі замовлення сумою вище ніж
+-- Всі замовлення, створені за певної дати
+
+CREATE VIEW orders_with_cash_amounts AS (
+   SELECT o.*, sum(p.price * otp.quantity) AS order_sum
+    FROM orders AS o 
+    JOIN orders_to_products AS otp
+    ON o.id = otp.order_id
+    JOIN products AS p 
+    ON otp.product_id = p.id
+    GROUP BY o.id
+);
+
+-- Всі замовлення конкретного користувача
+
+SELECT * FROM orders_with_cash_amounts
+WHERE customer_id = 60;
+
+
+CREATE VIEW spam_list AS (
+    SELECT customer_id FROM orders_with_cash_amounts
+    WHERE order_sum > 20000
+);
+
+
+/*
+Створити view:
+
+1. Топ-10 найдорожчих замовлень
+
+2. Топ-10 юзерів з найбільшою кількістю замовлень
+
+
+*/
+
+SELECT * 
+FROM orders_with_cash_amounts
+ORDER BY order_sum DESC
+LIMIT 10;
+
+CREATE VIEW top10_expensive_orders AS (
+    SELECT * 
+    FROM orders_with_cash_amounts
+    ORDER BY order_sum DESC
+    LIMIT 10);
+
+
+--2
+
+SELECT * FROM users_with_orders_amount
+ORDER BY order_count DESC
+LIMIT 10;
+
+
+CREATE VIEW top10_order_users AS (
+    SELECT * 
+    FROM orders_with_cash_amounts
+    ORDER BY order_sum DESC
+    LIMIT 10
+);
+
+
+--- Перестворити вью
+
+
+--1
+DROP VIEW top10_expensive_orders;
+DROP VIEW spam_list;
+DROP VIEW orders_with_cash_amounts;
+
+--2
+
+CREATE OR REPLACE VIEW orders_with_cash_amounts AS (
+   SELECT o.*, sum(p.price * otp.quantity) AS order_sum
+    FROM orders AS o 
+    LEFT JOIN orders_to_products AS otp
+    ON o.id = otp.order_id
+    LEFT JOIN products AS p 
+    ON otp.product_id = p.id
+    GROUP BY o.id
+);
+
+
+
+  SELECT o.*, sum(p.price * otp.quantity) AS order_sum
+    FROM orders AS o 
+    LEFT JOIN orders_to_products AS otp
+    ON o.id = otp.order_id
+    LEFT JOIN products AS p 
+    ON otp.product_id = p.id
+    GROUP BY o.id
+    ORDER BY o.id DESC;
+
+
+    DELETE FROM orders
+    WHERE id = 1279;
+
+
+SELECT * FROM orders_to_products AS otp
+WHERE product_id IS NULL;
+
+
+SELECT *
+FROM orders_to_products AS otp
+FULL JOIN products AS p
+ON otp.product_id = p.id
+WHERE otp.product_id IS NULL; --Catch it!
