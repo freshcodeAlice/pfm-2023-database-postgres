@@ -84,3 +84,48 @@ FROM products, temporaryTable
 
 */
 
+
+---- Кастомні типи даних ----
+
+--- Задача: переробити стовбець "статус" таблиці orders з boolean на перераховувану множину
+'new', 'processing', 'delivery', 'done'
+-- ENUM - enumerable, перераховувана множина
+
+DROP TYPE status;
+DROP TABLE c;
+
+CREATE TYPE order_status AS ENUM ('new', 'processing', 'delivery', 'done'); 
+
+
+CREATE TABLE c (
+    id serial PRIMARY KEY,
+    info status
+);
+
+
+ALTER TABLE orders
+ALTER COLUMN status TYPE order_status USING (
+        CASE status
+            WHEN false THEN 'new'
+            WHEN true THEN 'done'
+            ELSE 'processing'
+        END
+)::order_status; --- стається помилка через те, що дефолтне значення стовпця неможна автоматично конвертувати
+
+
+--- Рішення:
+-- дропнути дефолт
+-- змінити таблицю (кастувати автоматично по ходу)
+-- створити нове дефолтне правило для таблиці
+
+ALTER TABLE orders
+ALTER COLUMN status DROP DEFAULT;
+
+
+
+INSERT INTO orders (customer_id, status)
+VALUES (2,
+    'delivery');
+
+ALTER TABLE orders
+ALTER COLUMN status SET DEFAULT 'new';
